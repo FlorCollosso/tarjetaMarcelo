@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Homemade+Apple&display=swap');
+@font-face {
+  font-family: 'Magmawave Caps Bold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Magmawave Caps Bold'), url('./assets/MagmaWave\ Caps.woff') format('woff');
+}
+
+* {
+  --green : #68BF43;
+}
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #b1cbdc;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.card {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+}
+
+/* Portada */
+
+.portada {
+  background-color: #0056b3;
+  padding: 60px 80px 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-size: cover;
+  background-attachment: fixed;
+  background-image: url("./assets/ladrillos.jpg");
+}
+
+.textP svg {
+  width: 90%;
+  height: 90%;
+}
+
+.textP p {
+  text-align: right;
+  width: 87%;
+  line-height: 20px;
+}
+
+.resaltado {
+  color: var(--green);
+  font-weight: bold;
+}
+
+.imgP img {
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+}
+
+/* Ubicación */
+
+.ubicacion {
+  padding: 50px 80px 80px;
+  color: #121212;
+  font-family: 'Magmawave Caps Bold';
+  font-size: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.titleU {
+  display: flex;
+}
+
+.titleU h2 {
+  position: relative;
+  z-index: 2;
+}
+
+.titleU::before {
+  display: block;
+  position: relative;
+  transform: translateY(50%);
+  left: 40px;
+  content: '';
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  background-color: var(--green);
+}
+
+/* Asistencia  */
+
+.asistencia {
+  background-color: #1E1E1E;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 80px 80px;
+}
+
+.titleA {
+  display: flex;
+  font-family: 'Magmawave Caps Bold';
+  font-size: 28px;
+}
+
+.titleA h2 {
+  position: relative;
+  z-index: 2;
+}
+
+.titleA::before {
+  display: block;
+  position: relative;
+  transform: translateY(50%);
+  left: 40px;
+  content: '';
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  background-color: var(--green);
+}
+
+.form {
+  color: #121212;;
+  background-color: #fff;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  padding: 50px;
+  align-items: center;
+  border-radius: 20px;
+}
+
+.contentForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+input {
+  padding: 10px;
+  margin: 10px 0 20px;
+  border-radius: 12px;
+  border: .5px solid #bdbdbd;
+  background-color: #f2f2f2;
+}
+
+input:focus {
+  outline: none;
+  border: .5px solid var(--green);
+}
+
+button {
+  background-color: var(--green);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  width: 35%;
+  padding: 10px;
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: #50b127;
+}

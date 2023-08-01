@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación de Cumpleaños</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+
+    <!-- Sección de la portada -->
+    <section class="portada">
+      <div class="textP">
+        <svg xmlns="http://www.w3.org/2000/svg" width="172" height="140" viewBox="0 0 172 140">
+          <g id="Grupo_1" data-name="Grupo 1" transform="translate(-22 -56)">
+            <text id="mis_" data-name="mis " transform="translate(22 75)" fill="#68bf43" font-size="61" font-family="Impact"><tspan x="0" y="62">MIS </tspan></text>
+            <text id="pirulos" transform="translate(22 133)" fill="#fff" font-size="51" font-family="Impact"><tspan x="0" y="51">PIRULOS</tspan></text>
+            <text id="Veni_a_festejar" data-name="Veni a festejar" transform="translate(22 56)" fill="#fff" font-size="32" font-family="RageItalic, Rage"><tspan x="0" y="27">Veni a festejar</tspan></text>
+            <text id="_50" data-name="50" transform="translate(123 75)" fill="#68bf43" font-size="61" font-family="Impact"><tspan x="0" y="62">50</tspan></text>
+          </g>
+          <path id="Línea_1" data-name="Línea 1" d="M166,.5H0v-1H166Z" transform="translate(0.5 138.5)" fill="#fff"/>
+        </svg>
+        <p>El Sábado <span class="resaltado">02 de Septiembre</span> a partir de las <span class="resaltado">21:30 hs</span>. En el salón de fiestas <span class="resaltado">Gallardo</span>, sobre Ruta 3.</p>        
+      </div>
+      <div class="imgP">
+        <img src="./assets/marcelo3.jpeg" alt="">
+      </div>
+    </section>
+
+    <!-- Sección del Mapa -->
+    <section class="ubicacion">
+      <div class="titleU">
+        <h2>EN DÓNDE?</h2>
+      </div>
+      <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3406.283442180925!2d-62.828448184852775!3d-31.37874718141664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzHCsDIyJzQzLjUiUyA2MsKwNDknMzQuNSJX!5e0!3m2!1ses!2sar!4v1690564212649!5m2!1ses!2sar" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </section>
+
+    <!-- Sección de confirmar asistencia -->
+    <section class="asistencia">
+        <div class="titleA">
+          <h2>Vas a venir?</h2>
+        </div>
+        <form class="form">
+          <div class="contentForm">
+            <label for="nombre">Tu Nombre:</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Escribi acá tu nombre">
+            <label for="apellido">Tu Apellido:</label>
+            <input type="text" id="apellido" name="apellido" placeholder="Escribi acá tu apellido">
+            <label for="acompanantes">Acompañantes:</label>
+            <input type="text" id="acompanantes" name="acompanantes" placeholder="Acompañantes (opcional)">
+          </div>
+          <button onclick="enviarMensajeWhatsapp()">Confirmar</button>
+        </form>
+    </section>
+
+    <!-- Sección de la playlist -->
+    <section class="playlist">
+      <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4X0mBqn4uPJAx9fUvwJRpa?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <div>
+        <label for="search">Buscar canción:</label>
+        <input type="text" id="search" />
+        <button onclick="buscarCancion()" id="btnSpotify" type="button">Buscar</button>
+      </div>
+      <div>
+        <h2>Resultados de búsqueda</h2>
+        <ul id="results">
+        </ul>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="./script.js"></script>
+</body>
+</html>

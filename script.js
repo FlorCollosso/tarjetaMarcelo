@@ -65,19 +65,55 @@ function enviarMensajeWhatsapp() {
       .catch(error => console.error('Error en la búsqueda:', error));
     }
 
+    //Función para convertir ms en minutos
+    function formatDuration(duration_ms) {
+      const totalSeconds = Math.floor(duration_ms / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+    
+      return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+    }
+
     // Función para mostrar los resultados de la búsqueda
     function mostrarResultados(canciones) {
       const resultsList = document.getElementById('results');
+      const containerResults = document.getElementById('containerResults');
+    
       resultsList.innerHTML = '';
-
+    
+      const h2 = document.createElement('h2');
+      const hr = document.createElement('hr');
+      h2.innerHTML = 'Resultados Principales';
+      containerResults.appendChild(hr);
+      containerResults.appendChild(h2);
+    
       canciones.forEach(cancion => {
         const li = document.createElement('li');
-        const button = document.createElement('button');
-        button.innerText = cancion.name + ' - ' + cancion.artists[0].name;
-        button.onclick = () => agregarCancionALista(cancion.uri, playlistId);
-        li.appendChild(button);
+        const h3 = document.createElement('h3');
+        const p = document.createElement('p');
+        const span = document.createElement('span');
+        const div = document.createElement('div');
+        const div2 = document.createElement('div');
+    
+        div.innerHTML = `<img src="${cancion.album.images[0].url}" alt="${cancion.album.name}">`;
+        h3.innerText = cancion.name;
+        p.innerHTML = `${cancion.artists[0].name}`;
+        span.innerHTML = formatDuration(cancion.duration_ms);
+        li.onclick = () => agregarCancionALista(cancion.uri, playlistId);
+    
+        div2.classList.add('infoSong');
+    
+        div2.appendChild(h3);
+        div2.appendChild(p);
+        div.appendChild(div2);
+        div.appendChild(span);
+        li.appendChild(div);
+    
+        // Agregamos el <li> directamente al contenedor de resultados
         resultsList.appendChild(li);
       });
+    
+      containerResults.style.display = 'flex';
     }
 
     // Función para agregar una canción a la lista de reproducción

@@ -67,7 +67,7 @@ body::-webkit-scrollbar {
 /* Portada */
 
 .portada {
-  padding: 60px 80px 80px;
+  padding: 140px 80px;
   height: fit-content;
   display: flex;
   flex-direction: column;
@@ -82,7 +82,7 @@ body::-webkit-scrollbar {
 }
 
 .textP img {
-  width: 500px;
+  width: 700px;
   height: 100%;
 }
 

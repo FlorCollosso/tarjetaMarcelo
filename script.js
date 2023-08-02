@@ -13,7 +13,7 @@ function enviarMensajeWhatsapp() {
     const clientId = 'b2e75648ebaa4e72a27e103d84bc867a';
     const clientSecret = 'f04e030ee3ef4a23a4155f972e3a98c8';
     const redirectUri = 'http://127.0.0.1:5500/index.html';
-    const scopes = ['playlist-modify-public'];
+    
     const apiUrl = 'https://api.spotify.com/v1';
     
     let playlistId = '4X0mBqn4uPJAx9fUvwJRpa';
@@ -23,7 +23,7 @@ function enviarMensajeWhatsapp() {
     
       const data = new URLSearchParams();
       data.append('grant_type', 'client_credentials');
-      data.append('scope', scopes.join(' '));
+      data.append('scope', 'playlist-modify-public playlist-modify-private');
     
       return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();

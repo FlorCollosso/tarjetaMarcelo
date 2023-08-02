@@ -5,7 +5,7 @@ function enviarMensajeWhatsapp() {
     const acompanantes = document.getElementById("acompanantes").value;
     const mensaje = `¡Hola! Confirmo mi asistencia para el cumpleaños de Marelo. Yo, ${nombre} ${apellido}, voy a ir con los siguientes acompañantes: ${acompanantes || 'Ninguno'}.`;
     
-    const link = `https://wa.me/5493576447120?text=${encodeURIComponent(mensaje)}`;
+    const link = `https://wa.me/5493576464053?text=${encodeURIComponent(mensaje)}`;
     window.open(link, "_blank");
 }
 

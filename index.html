@@ -16,6 +16,43 @@
       </div>
     </section>
 
+    <!-- Sección de la galería -->
+    <section class="galeria">
+      <div class="title">
+        <h2 class="txt">Fotitos</h2>
+      </div>
+      <div class="ContainerCenter">
+        <!-- Radio Seleccionar -->
+        <input type="radio" name="Carrusel" id="Slider1" checked>
+        <input type="radio" name="Carrusel" id="Slider2">
+        <input type="radio" name="Carrusel" id="Slider3">
+        
+        <div class="Carrusels">
+          <!-- Imagen contenido -->
+          <div class="Carrusel"></div> 
+          <div class="Carrusel"></div>
+          <div class="Carrusel"></div>
+          
+          <!-- Flechas a la izquierda por cada imagen -->
+          <label for="Slider3" class="ArrowLeft Arrow1">❮</label>
+          <label for="Slider1" class="ArrowLeft Arrow2">❮</label>
+          <label for="Slider2" class="ArrowLeft Arrow3">❮</label>
+        
+          <!-- Flechas a la derecha por cada imagen -->
+          <label for="Slider2" class="ArrowRight Arrow1">❯</label> 
+          <label for="Slider3" class="ArrowRight Arrow2">❯</label>
+          <label for="Slider1" class="ArrowRight Arrow3">❯</label>
+        </div>
+        
+        <!-- Selector circulos inferiores colgantes -->
+        <div class="Selectors">
+          <label for="Slider1" class="Selector"></label>
+          <label for="Slider2" class="Selector"></label>
+          <label for="Slider3" class="Selector"></label>
+        </div>
+      </div>
+    </section>
+
     <!-- Sección del Mapa -->
     <section class="ubicacion">
       <div class="title">
@@ -54,6 +91,9 @@
       </div>
       <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4X0mBqn4uPJAx9fUvwJRpa?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       <div class="contentMusic">
+        <div class="info">
+          <p><span class="resaltado">Busca</span> y selecciona la canción que no puede faltar esa noche para <span class="resaltado">agregarla</span> a la lista de Spotify</p>
+        </div>
         <div class="search">
           <input type="text" id="search" placeholder="Buscar canción..." />
           <button onclick="buscarCancion()" id="btnSpotify" type="button"><img src="./assets/search.svg" alt="search"></button>

@@ -26,7 +26,7 @@ function login() {
 
 // Función para buscar canciones en Spotify
 function searchSongs() {
-    const searchInput = document.getElementById('searchInput').value;
+    const searchInput = document.getElementById('search').value;
     fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(searchInput)}&type=track`, {
         headers: {
             'Authorization': `Bearer ${accessToken}`

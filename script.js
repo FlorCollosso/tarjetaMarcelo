@@ -12,7 +12,7 @@ function enviarMensajeWhatsapp() {
 // Playlist
 const clientId = 'b2e75648ebaa4e72a27e103d84bc867a';
 const clientSecret = 'f04e030ee3ef4a23a4155f972e3a98c8';
-const redirectUri = 'http://127.0.0.1:5500/index.html';  
+const redirectUri = 'https://florcollosso.github.io/tarjetaMarcelo/';  
 const apiUrl = 'https://api.spotify.com/v1'; 
 const scopes = ['playlist-modify-public', 'playlist-modify-private'];
 let playlistId = '4X0mBqn4uPJAx9fUvwJRpa';

@@ -136,7 +136,7 @@ function getTokenAutorization() {
 }
 
 // Función para agregar una canción a la lista de reproducción
-async function agregarCancionALista(cancionUri, listaId, token) {
+async function agregarCancionALista(cancionUri, listaId, accessToken) {
   getTokenAutorization();
   const playlistUrl = `${apiUrl}/playlists/${listaId}/tracks`;
   const headers = {

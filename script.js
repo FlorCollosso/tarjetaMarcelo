@@ -99,7 +99,7 @@ function mostrarResultados(canciones) {
     h3.innerText = cancion.name;
     p.innerHTML = `${cancion.artists[0].name}`;
     span.innerHTML = formatDuration(cancion.duration_ms);
-    li.onclick = () => agregarCancionALista(cancion.uri, playlistId);
+    li.onclick = () => agregarCancionALista(cancion.uri, playlistId, token);
     
     div2.classList.add('infoSong');
     

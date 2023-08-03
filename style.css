@@ -223,6 +223,7 @@ body::-webkit-scrollbar {
 
 .map iframe {
   width: 700px;
+  height: 500px;
   border-radius: 12px;
   margin-top: 2em;
 }

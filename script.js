@@ -9,94 +9,19 @@ function enviarMensajeWhatsapp() {
     window.open(link, "_blank");
 }
 
-// Reemplaza con tus credenciales de Spotify
-const CLIENT_ID = 'b2e75648ebaa4e72a27e103d84bc867a';
-const REDIRECT_URI = 'https://florcollosso.github.io/tarjetaMarcelo/';
-
-const SCOPES = ['user-library-read', 'playlist-modify-private', 'playlist-modify-public'];
-
-let accessToken = null;
+// Playlist
+const clientId = 'b2e75648ebaa4e72a27e103d84bc867a';
+const clientSecret = 'f04e030ee3ef4a23a4155f972e3a98c8';
+const redirectUri = 'http://127.0.0.1:5500/index.html';  
+const apiUrl = 'https://api.spotify.com/v1'; 
+const scopes = ['playlist-modify-public', 'playlist-modify-private'];
 let playlistId = '4X0mBqn4uPJAx9fUvwJRpa';
+let accessToken = null;
 
 // Función para iniciar sesión en Spotify
 function login() {
-    const url = `https://accounts.spotify.com/authorize?client_id=${CLIENT_ID}&response_type=token&redirect_uri=${REDIRECT_URI}&scope=${SCOPES.join('%20')}`;
+    const url = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}&scope=${scopes.join(' ')}`;
     window.location = url;
-}
-
-// Función para buscar canciones en Spotify
-function searchSongs() {
-    const searchInput = document.getElementById('search').value;
-    fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(searchInput)}&type=track`, {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        displaySearchResults(data.tracks.items);
-    })
-    .catch(error => console.error('Error:', error));
-}
-
-// Función para mostrar los resultados de búsqueda
-function displaySearchResults(tracks) {
-  const resultsList = document.getElementById('results');
-  const containerResults = document.getElementById('containerResults');
-    
-  resultsList.innerHTML = '';
-    
-  const h2 = document.createElement('h2');
-  const hr = document.createElement('hr');
-  h2.innerHTML = 'Resultados Principales';
-  containerResults.appendChild(hr);
-  containerResults.appendChild(h2);
-    
-  canciones.forEach(cancion => {
-    const li = document.createElement('li');
-    const h3 = document.createElement('h3');
-    const p = document.createElement('p');
-    const span = document.createElement('span');
-    const div = document.createElement('div');
-    const div2 = document.createElement('div');
-    
-    div.innerHTML = `<img src="${cancion.album.images[0].url}" alt="${cancion.album.name}">`;
-    h3.innerText = cancion.name;
-    p.innerHTML = `${cancion.artists[0].name}`;
-    span.innerHTML = formatDuration(cancion.duration_ms);
-    li.onclick = () => addToPlaylist(cancion.uri, playlistId );
-    
-    div2.classList.add('infoSong');
-    
-    div2.appendChild(h3);
-    div2.appendChild(p);
-    div.appendChild(div2);
-    div.appendChild(span);
-    li.appendChild(div);
-    
-    resultsList.appendChild(li);
-  });
-    
-  containerResults.style.display = 'flex';
-}
-
-// Función para agregar canciones a la lista de reproducción
-function addToPlaylist(uri) {
-  fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?uris=${uri}`, {
-    method: 'POST',
-    headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-    }
-})
-.then(response => {
-    if (response.ok) {
-        alert('Canción agregada a la playlist.');
-    } else {
-        alert('Error al agregar la canción a la playlist.');
-    }
-})
-.catch(error => console.error('Error:', error));
 }
 
 // Verificar el hash de la URL para obtener el token de acceso
@@ -112,83 +37,63 @@ function handleRedirect() {
             return initial;
         }, {});
 
-    window.location.hash = '';
-    accessToken = hash.access_token;
-}
-
-// Verificar si ya tenemos un token de acceso o iniciar sesión
-window.onload = function() {
-    handleRedirect();
-    if (!accessToken) {
+    if (hash.access_token) {
+        accessToken = hash.access_token;
+        // Ahora que tenemos el token, podemos ocultar la información de la URL
+        window.history.pushState({}, document.title, "/");
+    } else {
+        // Si no hay un token de acceso, redirigir al usuario a iniciar sesión
         login();
     }
-};
+}
 
+// Función para obtener el token de acceso
+function getAccessToken() {
+  const credentials = btoa(`${clientId}:${clientSecret}`);
+  const data = new URLSearchParams();
 
-
-
-
-
-
-
-
-
-
-// // Playlist
-// const clientId = 'b2e75648ebaa4e72a27e103d84bc867a';
-// const clientSecret = 'f04e030ee3ef4a23a4155f972e3a98c8';
-// const redirectUri = 'https://florcollosso.github.io/tarjetaMarcelo/';  
-// const apiUrl = 'https://api.spotify.com/v1';   
-// let playlistId = '4X0mBqn4uPJAx9fUvwJRpa';
-
-// // Función para obtener el token de acceso
-// function getAccessToken() {
-//   const credentials = btoa(`${clientId}:${clientSecret}`);
-//   const data = new URLSearchParams();
-
-//   data.append('grant_type', 'client_credentials');
-//   data.append('scope', 'playlist-modify-public playlist-modify-private');
+  data.append('grant_type', 'client_credentials');
+  data.append('scope', 'playlist-modify-public playlist-modify-private');
     
-//   return new Promise((resolve, reject) => {
-//     const xhr = new XMLHttpRequest();
-//     xhr.open('POST', 'https://accounts.spotify.com/api/token', true);
-//     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-//     xhr.setRequestHeader('Authorization', `Basic ${credentials}`);
-//     xhr.setRequestHeader('Cookie', '__Host-device_id=AQADHqVNsrx2jxCFtjZKqbEs4Gn0vKNVN25BM_GsYFdGZSpoAAyRCVlMcMGikqeKQXAj-N_GJWmWB7izusTj06U5tv2W4q_Endk; sp_tr=false');
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', 'https://accounts.spotify.com/api/token', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.setRequestHeader('Authorization', `Basic ${credentials}`);
+    xhr.setRequestHeader('Cookie', '__Host-device_id=AQADHqVNsrx2jxCFtjZKqbEs4Gn0vKNVN25BM_GsYFdGZSpoAAyRCVlMcMGikqeKQXAj-N_GJWmWB7izusTj06U5tv2W4q_Endk; sp_tr=false');
     
-//     xhr.onload = function () {
-//       if (xhr.status >= 200 && xhr.status < 300) {
-//         const response = JSON.parse(xhr.responseText);
-//         resolve(response.access_token);
-//       } else {
-//         reject(new Error(xhr.statusText));
-//       }
-//     };
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const response = JSON.parse(xhr.responseText);
+        resolve(response.access_token);
+      } else {
+        reject(new Error(xhr.statusText));
+      }
+    };
     
-//     xhr.onerror = function () {
-//       reject(new Error('Error de red o CORS bloqueado'));
-//     };
+    xhr.onerror = function () {
+      reject(new Error('Error de red o CORS bloqueado'));
+    };
     
-//     xhr.send(data);
-//     console.log(xhr);
-//   });
-// }
+    xhr.send(data);
+  });
+}
 
-// // Función para buscar canciones en Spotify
-// async function buscarCancion() {
-//   const token = await getAccessToken();
-//   const query = document.getElementById('search').value;
-//   const searchUrl = `${apiUrl}/search?q=${encodeURIComponent(query)}&type=track`;
+// Función para buscar canciones en Spotify
+async function buscarCancion() {
+  const token = await getAccessToken();
+  const query = document.getElementById('search').value;
+  const searchUrl = `${apiUrl}/search?q=${encodeURIComponent(query)}&type=track`;
 
-//   fetch(searchUrl, {
-//     headers: {
-//       'Authorization': `Bearer ${token}`,
-//     }
-//   })
-//   .then(response => response.json())
-//   .then(data => mostrarResultados(data.tracks.items))
-//   .catch(error => console.error('Error en la búsqueda:', error));
-// }
+  fetch(searchUrl, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  })
+  .then(response => response.json())
+  .then(data => mostrarResultados(data.tracks.items))
+  .catch(error => console.error('Error en la búsqueda:', error));
+}
 
 //Función para convertir ms en minutos
 function formatDuration(duration_ms) {
@@ -240,51 +145,38 @@ function mostrarResultados(canciones) {
   containerResults.style.display = 'flex';
 }
 
-// // Función para obtener token con los accesos para agregar canciones a la lista
-// let accessToken = null;
-// function getTokenAutorization() {
-//   const scopes = ['playlist-modify-public'];
+// Verificar si ya tenemos un token de acceso o iniciar sesión
+window.onload = function() {
+    handleRedirect();
+    if (!accessToken) {
+        login();
+    }
+};
 
-//   // URL de autorización
-//   const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}`;
+// Función para agregar una canción a la lista de reproducción
+async function agregarCancionALista(cancionUri, listaId) {
+    const playlistUrl = `${apiUrl}/playlists/${listaId}/tracks`;
+    const headers = {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+    };
+    const data = {
+        uris: [cancionUri]
+    };
 
-//   // Redirige al usuario a la página de autorización de Spotify
-//   window.location.href = authorizeUrl;
-
-//   // Función para obtener el token de acceso desde la URL
-//   function obtenerTokenDeUrl() {
-//     const urlParams = new URLSearchParams(window.location.hash.substr(1));
-//     accessToken = urlParams.get('access_token');
-//   }
-
-//   obtenerTokenDeUrl();
-// }
-
-// // Función para agregar una canción a la lista de reproducción
-// async function agregarCancionALista(cancionUri, listaId) {
-//   getTokenAutorization();
-//   const playlistUrl = `${apiUrl}/playlists/${listaId}/tracks`;
-//   const headers = {
-//     'Authorization': `Bearer ${accessToken}`,
-//     'Content-Type': 'application/json'
-//   };
-//   const data = {
-//     uris: [cancionUri]
-//   };
-
-//   fetch(playlistUrl, {
-//     method: 'POST',
-//     headers: headers,
-//     body: JSON.stringify(data)
-//   })
-//   .then(response => {
-//     if (response.ok) {
-//       alert('Canción agregada correctamente a la lista.');
-//     } else {
-//       alert('Error al agregar la canción a la lista.');
-//     }
-//   })
-//   .catch(error => {
-//     console.error('Error al agregar la canción:', error);
-//   });
-// }
+    fetch(playlistUrl, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Canción agregada correctamente a la lista.');
+        } else {
+            alert('Error al agregar la canción a la lista.');
+        }
+    })
+    .catch(error => {
+        console.error('Error al agregar la canción:', error);
+    });
+}

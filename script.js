@@ -52,8 +52,8 @@ function getAccessToken() {
   const credentials = btoa(`${clientId}:${clientSecret}`);
   const data = new URLSearchParams();
 
-  data.append('grant_type', 'client_credentials');
-  data.append('scope', 'playlist-modify-public playlist-modify-private');
+  data.append('grant_type', 'implicit grant');
+  data.append('scope', 'user-read-private user-read-email');
     
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();

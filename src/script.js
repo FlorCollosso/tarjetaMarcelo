@@ -129,7 +129,7 @@ let selectedSongs = [];
 // Función para cargar las canciones desde el servidor
 async function cargarCancionesDesdeServidor() {
   try {
-    const response = await fetch('http://3.94.121.6/playlist', {
+    const response = await fetch('http://3.94.121.6:3000/playlist', {
       method: 'GET',
       mode: 'cors',
     });

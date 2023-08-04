@@ -12,55 +12,21 @@ function enviarMensajeWhatsapp() {
 // Playlist
 const clientId = 'b2e75648ebaa4e72a27e103d84bc867a';
 const clientSecret = 'f04e030ee3ef4a23a4155f972e3a98c8';
-const redirectUri = 'https://florcollosso.github.io/tarjetaMarcelo/';  
+const redirectUri = 'http://127.0.0.1:5500/index.html';  
 const apiUrl = 'https://api.spotify.com/v1'; 
-const scopes = ['playlist-modify-public', 'playlist-modify-private'];
-let playlistId = '4X0mBqn4uPJAx9fUvwJRpa';
-let accessToken = null;
-
-// Función para iniciar sesión en Spotify
-function login() {
-    const url = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${redirectUri}&scope=${scopes.join(' ')}`;
-    window.location = url;
-}
-
-// Verificar el hash de la URL para obtener el token de acceso
-function handleRedirect() {
-    const hash = window.location.hash
-        .substring(1)
-        .split('&')
-        .reduce((initial, item) => {
-            if (item) {
-                const parts = item.split('=');
-                initial[parts[0]] = decodeURIComponent(parts[1]);
-            }
-            return initial;
-        }, {});
-
-    if (hash.access_token) {
-        accessToken = hash.access_token;
-        // Ahora que tenemos el token, podemos ocultar la información de la URL
-        window.history.pushState({}, document.title, "/");
-    } else {
-        // Si no hay un token de acceso, redirigir al usuario a iniciar sesión
-        login();
-    }
-}
 
 // Función para obtener el token de acceso
 function getAccessToken() {
   const credentials = btoa(`${clientId}:${clientSecret}`);
   const data = new URLSearchParams();
 
-  data.append('grant_type', 'implicit grant');
-  data.append('scope', 'user-read-private user-read-email');
-    
+  data.append('grant_type', 'client_credentials');
+  
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('POST', 'https://accounts.spotify.com/api/token', true);
     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     xhr.setRequestHeader('Authorization', `Basic ${credentials}`);
-    xhr.setRequestHeader('Cookie', '__Host-device_id=AQADHqVNsrx2jxCFtjZKqbEs4Gn0vKNVN25BM_GsYFdGZSpoAAyRCVlMcMGikqeKQXAj-N_GJWmWB7izusTj06U5tv2W4q_Endk; sp_tr=false');
     
     xhr.onload = function () {
       if (xhr.status >= 200 && xhr.status < 300) {
@@ -129,7 +95,7 @@ function mostrarResultados(canciones) {
     h3.innerText = cancion.name;
     p.innerHTML = `${cancion.artists[0].name}`;
     span.innerHTML = formatDuration(cancion.duration_ms);
-    li.onclick = () => agregarCancionALista(cancion.uri, playlistId );
+    li.onclick = () => agregarCancionALista(cancion.name, cancion.artists[0].name, formatDuration(cancion.duration_ms));
     
     div2.classList.add('infoSong');
     
@@ -145,38 +111,80 @@ function mostrarResultados(canciones) {
   containerResults.style.display = 'flex';
 }
 
-// Verificar si ya tenemos un token de acceso o iniciar sesión
-window.onload = function() {
-    handleRedirect();
-    if (!accessToken) {
-        login();
+
+
+
+
+
+window.addEventListener('load', async () => {
+    cargarCancionesDesdeLocalStorage();
+    selectedSongs = await cargarCancionesDesdeServidor();
+    actualizarTablaHTML();
+  });
+
+let selectedSongs = [];
+
+// Función para cargar las canciones desde el servidor
+async function cargarCancionesDesdeServidor() {
+    try {
+      const response = await fetch('http://localhost:3000/playlist', {
+        method: 'GET',
+        mode: 'cors',
+      });
+      const playlistData = await response.json();
+      return playlistData;
+    } catch (error) {
+      console.error('Error al cargar la playlist desde el servidor:', error);
+      return [];
     }
-};
-
-// Función para agregar una canción a la lista de reproducción
-async function agregarCancionALista(cancionUri, listaId) {
-    const playlistUrl = `${apiUrl}/playlists/${listaId}/tracks`;
-    const headers = {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
+  }
+  
+  async function agregarCancionALista(nombre, artista, duracion) {
+    const selectedSong = {
+        orden: selectedSongs.length + 1,
+        nombre: nombre,
+        artista: artista,
+        duracion: duracion,
     };
-    const data = {
-        uris: [cancionUri]
-    };
-
-    fetch(playlistUrl, {
-        method: 'POST',
-        headers: headers,
-        body: JSON.stringify(data)
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Canción agregada correctamente a la lista.');
-        } else {
-            alert('Error al agregar la canción a la lista.');
-        }
-    })
-    .catch(error => {
-        console.error('Error al agregar la canción:', error);
+      
+    selectedSongs.push(selectedSong);
+      
+    try {
+      await fetch('http://localhost:3000/playlist', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedSongs),
+      });
+      
+      actualizarTablaHTML();
+    } catch (error) {
+      console.error('Error al guardar la playlist en JSON:', error);
+    }
+  }
+  
+  function cargarCancionesDesdeLocalStorage() {
+    const storedCanciones = localStorage.getItem('cancionesSeleccionadas');
+    if (storedCanciones) {
+      selectedSongs = JSON.parse(storedCanciones);
+    }
+  }
+  
+  function actualizarTablaHTML() {
+    const tabla = document.getElementById('tabla');
+    tabla.innerHTML = '';
+    
+    selectedSongs.forEach((cancion, index) => {
+        const row = tabla.insertRow();
+        row.insertCell().textContent = cancion.orden;
+        
+        const nameArtistCell = row.insertCell();
+        nameArtistCell.innerHTML = `<span class="nombre">${cancion.nombre}</span><span class="artista">${cancion.artista}</span>`;
+        nameArtistCell.classList.add('name-artist-cell');
+        
+        const durationCell = row.insertCell();
+        durationCell.textContent = cancion.duracion;
+        durationCell.classList.add('duration-cell');
     });
-}
+  }

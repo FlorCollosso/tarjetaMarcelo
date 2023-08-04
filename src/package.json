@@ -1,0 +1,13 @@
+{
+  "name": "tarjetamarcelo",
+  "description": "Tarjeta Marcelo",
+  "scripts": {
+    "start": "npm run shell"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "main": "index.js",
+
+  "private": true
+}

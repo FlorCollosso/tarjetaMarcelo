@@ -48,10 +48,10 @@ app.put('/playlist', (req, res) => {
 
 // Ruta para la solicitud GET en la ruta raíz '/'
 app.get('/', (req, res) => {
-    res.send('Servidor funcionando correctamente');
+    res.send('Servidor funcionando correctamente 🤓');
   });
 
 // Iniciar el servidor y escuchar en el puerto 3000
 app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+    console.log(`Servidor escuchando en http://localhost:${port} 🚀`);
 });
